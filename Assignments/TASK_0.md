@@ -52,12 +52,12 @@ Pour les classes `Tower`, `Aircaft`, `Airport` et `Terminal`, listez leurs fonct
    - move      : fait avancer la simulation des terminaux d'un cran
 
  - Terminal
-   - in_use         :
-   - is_servicing   :
-   - assign_craft   :
-   - start_service  :
-   - finish_service :
-   - move           :
+   - in_use         : renvoie True si le Terminal est occupé
+   - is_servicing   : renvoie True si le Terminal est reservé
+   - assign_craft   : assigne un nouvelle avion au Terminal
+   - start_service  : commence un cycle de service
+   - finish_service : passe le Terminal en mode disponible
+   - move           : avance d'un cran dans le cycle de service
 
  - Tower
    - get_instructions    : Renvoie une queue des points d'arrêt pour pouvoir attérir
