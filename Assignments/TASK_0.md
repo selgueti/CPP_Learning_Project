@@ -81,6 +81,10 @@ Expliquez les intérêts de ce choix.
 1) Déterminez à quel endroit du code sont définies les vitesses maximales et accélération de chaque avion.
 Le Concorde est censé pouvoir voler plus vite que les autres avions.
 Modifiez le programme pour tenir compte de cela.
+ - Les vitesses maximales et accélération de chaque avion sont définies dans la fonction
+```cpp 
+inline void init_aircraft_types();
+```
 
 2) Identifiez quelle variable contrôle le framerate de la simulation.
 Ajoutez deux nouveaux inputs au programme permettant d'augmenter ou de diminuer cette valeur.
