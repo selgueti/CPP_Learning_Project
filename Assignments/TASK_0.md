@@ -6,27 +6,75 @@ Compilez et lancez le programme.
 
 Allez dans le fichier `tower_sim.cpp` et recherchez la fonction responsable de gérer les inputs du programme.
 Sur quelle touche faut-il appuyer pour ajouter un avion ?
+ - Pour ajouter un avion il faut appuyer sur la touche 'C'.
+
 Comment faire pour quitter le programme ?
+ - Pour quitter le programme on peut appuyer sur 'X' ou 'Q'.
+
 A quoi sert la touche 'F' ?
+ - La touche 'F' sert à passer en mode plein écran.
 
 Ajoutez un avion à la simulation et attendez.
 Que est le comportement de l'avion ?
+ - L'avion se pose et redécole, en boucle.
+
 Quelles informations s'affichent dans la console ?
+ - Différents logs quand l'avion arrive, se pose et redécole. 
 
 Ajoutez maintenant quatre avions d'un coup dans la simulation.
 Que fait chacun des avions ?
+ - Trois se pose directement et redécole, alors que le 4ème attend un terminal de libre. Les avions ne se pose pas dans l'ordre d'ajout mais lorsqu'un terminal est disonible c'est l'avion "le plus apte à se poser" qui se pose.
 
 ## B- Analyse du code
 
 Listez les classes du programme à la racine du dossier src/.
 Pour chacune d'entre elle, expliquez ce qu'elle représente et son rôle dans le programme.
+ - Aircraft        : Représente un avion
+ - Airporttype     : Caractéristiques d'un aéroport
+ - Airport         : Représente un aéroport avec ses terminaux et sa tour de contrôle
+ - Terminal        : Représente un terminal
+ - TowerSimulation : Moteur de la simulation
+ - Tower           : Represente une tour de contrôle
+ - Waypoint        : Représente un point de passage
+
 
 Pour les classes `Tower`, `Aircaft`, `Airport` et `Terminal`, listez leurs fonctions-membre publiques et expliquez précisément à quoi elles servent.
+
+ - Aircraft
+   - get_flight_num : renvoie le numéros de l'avion
+   - distance_to    : renvoie la distance entre l'avion et le point passé en paramètre 
+   - display        : affiche l'avion
+   - move           : déplace l'avion d'un cran
+
+ - Airport
+   - get_tower : renvoie la Tower associé
+   - display   : affiche l'aeroport
+   - move      : fait avancer la simulation des terminaux d'un cran
+
+ - Terminal
+   - in_use         :
+   - is_servicing   :
+   - assign_craft   :
+   - start_service  :
+   - finish_service :
+   - move           :
+
+ - Tower
+   - get_instructions    : Renvoie une queue des points d'arrêt pour pouvoir attérir
+   - arrived_at_terminal : Modifie l'aéroport pour signaler que cette Tower est occupé par un avion
+
+
 Réalisez ensuite un schéma présentant comment ces différentes classes intéragissent ensemble.
 
+# TODO faire le schema UML
+
 Quelles classes et fonctions sont impliquées dans la génération du chemin d'un avion ?
+ - Les classes et fonctions qui sont impliquées dans la génération du chemin d'un avion sont:
+    - Aircraft(move, turn_to_waypoint) et Waypoint
+
 Quel conteneur de la librairie standard a été choisi pour représenter le chemin ?
 Expliquez les intérêts de ce choix.
+ - Il s'agit d'une std::deque\<Waypoint\>, ce choix est interessant car il offre des compléxité en O(1) pour l'ajout et la suppression en tête/fin.
 
 ## C- Bidouillons !
 
