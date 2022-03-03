@@ -77,7 +77,8 @@ void timer(const int step)
     {
         for (auto& item : move_queue)
         {
-            item->move();
+            
+            std::cout << item->move() << std::endl;
         }
     }
     glutPostRedisplay();

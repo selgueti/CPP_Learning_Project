@@ -96,7 +96,8 @@ GL::keystrokes.emplace('d', []() { GL::ticks_per_sec -= DEFAULT_TPS_INCREMENT;})
 ```
 
 Essayez maintenant de mettre en pause le programme en manipulant ce framerate. Que se passe-t-il ?\
- - 
+ - si Gl::ticks_per_sec vaut 0 on observe une floating point exception car dans la fonction `void timer(const int step)` on peut observer l'appelle de fonction suivant : `glutTimerFunc(1000u / ticks_per_sec, timer, step + 1);`
+ - de plus Gl::ticks_per_sec étant un unsigned int, (0 - 1) == max unsigned int donc cela va augmenté le framerate au lieu de le diminué
 
 Ajoutez une nouvelle fonctionnalité au programme pour mettre le programme en pause, et qui ne passe pas par le framerate.
 
@@ -107,9 +108,16 @@ Ajoutez une nouvelle fonctionnalité au programme pour mettre le programme en pa
 Faites en sorte qu'à la place, il soit retiré du programme.\
 Indices :\
 A quel endroit pouvez-vous savoir que l'avion doit être supprimé ?\
+ - Dans la fonction `Aircraft::move()`
+
 Pourquoi n'est-il pas sûr de procéder au retrait de l'avion dans cette fonction ?
+ - Car on modifie la structure alors qu'on la parcours à l'aide d'une boucle foreach.
+
 A quel endroit de la callstack pourriez-vous le faire à la place ?\
+ - Dans la fonction `timer()`.
+
 Que devez-vous modifier pour transmettre l'information de la première à la seconde fonction ?
+ - Il faut changer la signature de `move()` pour retourner l'information.
 
 5) Lorsqu'un objet de type `Displayable` est créé, il faut ajouter celui-ci manuellement dans la liste des objets à afficher.
 Il faut également penser à le supprimer de cette liste avant de le détruire.
