@@ -8,7 +8,7 @@ const MediaPath one_lane_airport_sprite_path = { "airport_1lane.png" };
 const MediaPath two_lane_airport_sprite_path = { "airport_2lane.png" };
 
 // number of cycles needed to service an aircraft at a terminal
-constexpr unsigned int SERVICE_CYCLES = 20u;
+constexpr unsigned int SERVICE_CYCLES = 2 * 20u;
 // speeds below the threshold speed loose altitude linearly
 constexpr float SPEED_THRESHOLD = 0.05f;
 // this models the speed with wich slow (speed < SPEED_THRESHOLD) aircrafts sink
@@ -22,6 +22,8 @@ constexpr unsigned char NUM_AIRCRAFT_TILES = 8;
 constexpr float PLANE_TEXTURE_DIM = 0.2f;
 // default number of ticks per second
 constexpr unsigned int DEFAULT_TICKS_PER_SEC = 16u;
+// default nimber of ticks to add/substract per acceleration or slowing of time. @MINE
+constexpr unsigned int DEFAULT_TPS_INCREMENT = DEFAULT_TICKS_PER_SEC * 10 / 100; //@MINE
 // default zoom factor
 constexpr float DEFAULT_ZOOM = 2.0f;
 // default window dimensions

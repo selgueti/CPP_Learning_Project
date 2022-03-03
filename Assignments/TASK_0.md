@@ -87,11 +87,21 @@ inline void init_aircraft_types();
 ```
 
 2) Identifiez quelle variable contrôle le framerate de la simulation.
+ - Le framerate de la simulation est contrôlé par la variable `GL::ticks_per_sec`.
+
 Ajoutez deux nouveaux inputs au programme permettant d'augmenter ou de diminuer cette valeur.
+```cpp
+GL::keystrokes.emplace('u', []() { GL::ticks_per_sec += DEFAULT_TPS_INCREMENT;}); 
+GL::keystrokes.emplace('d', []() { GL::ticks_per_sec -= DEFAULT_TPS_INCREMENT;});
+```
+
 Essayez maintenant de mettre en pause le programme en manipulant ce framerate. Que se passe-t-il ?\
+ - 
+
 Ajoutez une nouvelle fonctionnalité au programme pour mettre le programme en pause, et qui ne passe pas par le framerate.
 
 3) Identifiez quelle variable contrôle le temps de débarquement des avions et doublez-le.
+ - Le temps de débarquement des avions est contrôlé par la varriable SERVICE_CYCLES .
 
 4) Lorsqu'un avion a décollé, il réattérit peu de temps après.
 Faites en sorte qu'à la place, il soit retiré du programme.\
