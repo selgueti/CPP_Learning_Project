@@ -56,7 +56,6 @@ public:
         control { control_ }
     {
         speed.cap_length(max_speed());
-        GL::display_queue.emplace_back(this);
     }
 
     ~Aircraft() { std::cout << "Aircraft : " << flight_number << " : destroyed" << std::endl; }

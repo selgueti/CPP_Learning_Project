@@ -21,6 +21,13 @@ Vous avez 2 choix possibles :
 
 Réfléchissez aux pour et contre de chacune de ces options.
 
+- Créer une nouvelle classe :
+     - Pour   : limite les responsabilités, augmente la lisibilité du code
+     - Contre : ?
+- donner ce rôle à une classe existante.
+     - Pour   : ? 
+     - Contre : violation du single responsability principle
+     - 
 Pour le restant de l'exercice, vous partirez sur le premier choix.
 
 ### B - Déterminer le propriétaire de chaque avion
