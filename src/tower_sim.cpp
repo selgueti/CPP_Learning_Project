@@ -61,10 +61,10 @@ void TowerSimulation::create_keystrokes() const
     GL::keystrokes.emplace('u', []() { GL::ticks_per_sec += DEFAULT_TPS_INCREMENT;}); 
     GL::keystrokes.emplace('d', []() {
         GL::ticks_per_sec -= DEFAULT_TPS_INCREMENT;
-        /*if(GL::ticks_per_sec == 0){
+        if(GL::ticks_per_sec == 0){
             GL::ticks_per_sec = 1;
-        }*/
-        std::cout << GL::ticks_per_sec << std::endl;
+        }
+        //std::cout << "GL::ticks_per_sec : " << GL::ticks_per_sec << std::endl;
         });
     GL::keystrokes.emplace(' ', []() { GL::PAUSED = !GL::PAUSED;});
     
@@ -81,7 +81,6 @@ void TowerSimulation::display_help() const
         std::cout << ks_pair.first << ' ';
     }
 
-    std::cout << std::endl;
 }
 
 void TowerSimulation::init_airport()
