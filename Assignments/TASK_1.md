@@ -27,7 +27,7 @@ Réfléchissez aux pour et contre de chacune de ces options.
 - donner ce rôle à une classe existante.
      - Pour   : ? 
      - Contre : violation du single responsability principle
-     - 
+ 
 Pour le restant de l'exercice, vous partirez sur le premier choix.
 
 ### B - Déterminer le propriétaire de chaque avion
@@ -37,9 +37,16 @@ Il serait donc bon de savoir qui est censé détruire les avions du programme, a
 
 Répondez aux questions suivantes :
 1. Qui est responsable de détruire les avions du programme ? (si vous ne trouvez pas, faites/continuez la question 4 dans TASK_0)
+ - la fonction timer()
+
 2. Quelles autres structures contiennent une référence sur un avion au moment où il doit être détruit ?
+ - move_queue et display_queue et tower
+  
 3. Comment fait-on pour supprimer la référence sur un avion qui va être détruit dans ces structures ?
+ - on fait un erase après avoir delete
+
 4. Pourquoi n'est-il pas très judicieux d'essayer d'appliquer la même chose pour votre `AircraftManager` ?
+ - Il n'est pas judicieux d'essayer d'appliquer lâ même chose pour notre `AircraftManager` car celui ci contient un `unique_ptr<Aircraft>`, qui libèrera la ressource au moment du erase.
 
 Pour simplifier le problème, vous allez déplacer l'ownership des avions dans la classe `AircraftManager`.
 Vous allez également faire en sorte que ce soit cette classe qui s'occupe de déplacer les avions, et non plus la fonction `timer`.
