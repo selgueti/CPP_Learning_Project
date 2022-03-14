@@ -58,7 +58,9 @@ public:
         texture { image },
         terminals { type.create_terminals() },
         tower { *this }
-    {}
+    {
+        GL::display_queue.emplace_back(this);
+    }
 
     Tower& get_tower() { return tower; }
 

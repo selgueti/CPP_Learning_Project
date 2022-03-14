@@ -40,7 +40,7 @@ void TowerSimulation::create_aircraft(const AircraftType& type) const
     const Point3D direction = (-start).normalize();
 
     Aircraft* aircraft = new Aircraft { type, flight_number, start, direction, airport->get_tower() };
-    GL::display_queue.emplace_back(aircraft);
+    // GL::display_queue.emplace_back(aircraft);
     GL::move_queue.emplace(aircraft);
 }
 
@@ -58,17 +58,23 @@ void TowerSimulation::create_keystrokes() const
     GL::keystrokes.emplace('-', []() { GL::change_zoom(1.05f); });
     GL::keystrokes.emplace('f', []() { GL::toggle_fullscreen(); });
 
-    GL::keystrokes.emplace('u', []() { GL::ticks_per_sec += DEFAULT_TPS_INCREMENT;}); 
-    GL::keystrokes.emplace('d', []() {
-        GL::ticks_per_sec -= DEFAULT_TPS_INCREMENT;
-        /*if(GL::ticks_per_sec == 0){
-            GL::ticks_per_sec = 1;
-        }*/
-        std::cout << GL::ticks_per_sec << std::endl;
-        });
-    GL::keystrokes.emplace(' ', []() { GL::PAUSED = !GL::PAUSED;});
-    
-
+    GL::keystrokes.emplace('u', []() { GL::ticks_per_sec += DEFAULT_TPS_INCREMENT; });
+    GL::keystrokes.emplace('d',
+                           []()
+                           {
+                               GL::ticks_per_sec -= DEFAULT_TPS_INCREMENT;
+                               if (GL::ticks_per_sec == 0)
+                               {
+                                   GL::ticks_per_sec = 1;
+                               }
+                               // std::cout << GL::ticks_per_sec << std::endl;
+                           });
+    GL::keystrokes.emplace(' ',
+                           []()
+                           {
+                               GL::PAUSED = !GL::PAUSED;
+                               std::cout << "Size display queue : " << GL::display_queue.size() << std::endl;
+                           });
 }
 
 void TowerSimulation::display_help() const
@@ -89,7 +95,7 @@ void TowerSimulation::init_airport()
     airport = new Airport { one_lane_airport, Point3D { 0, 0, 0 },
                             new img::Image { one_lane_airport_sprite_path.get_full_path() } };
 
-    GL::display_queue.emplace_back(airport);
+    // GL::display_queue.emplace_back(airport);
     GL::move_queue.emplace(airport);
 }
 

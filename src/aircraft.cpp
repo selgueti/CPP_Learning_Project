@@ -92,8 +92,8 @@ bool Aircraft::move()
 {
     if (waypoints.empty())
     {
-        if(!first_passage){
-            first_passage = false;
+        if (!first_passage)
+        {
             return true;
         }
         waypoints = control.get_instructions(*this);

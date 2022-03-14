@@ -20,7 +20,7 @@ private:
     Tower& control;
     bool landing_gear_deployed = false; // is the landing gear deployed?
     bool is_at_terminal        = false;
-    bool first_passage = true;
+    bool first_passage         = true;
 
     // turn the aircraft to arrive at the next waypoint
     // try to facilitate reaching the waypoint after the next by facing the
@@ -56,7 +56,10 @@ public:
         control { control_ }
     {
         speed.cap_length(max_speed());
+        GL::display_queue.emplace_back(this);
     }
+
+    ~Aircraft() { std::cout << "Aircraft : " << flight_number << " : destroyed" << std::endl; }
 
     const std::string& get_flight_num() const { return flight_number; }
     float distance_to(const Point3D& p) const { return pos.distance_to(p); }

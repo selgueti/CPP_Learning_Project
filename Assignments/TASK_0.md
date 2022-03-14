@@ -133,9 +133,12 @@ Modifiez le code afin d'utiliser un conteneur STL plus adapté. Normalement, à 
 ## D- Théorie
 
 1) Comment a-t-on fait pour que seule la classe `Tower` puisse réserver un terminal de l'aéroport ?
+Car la fonction `reserve_terminal` de airport est privée et que seule la classe `Tower` en est friendly.
 
 2) En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une réference ?
+ - Car le `Point3D` en question n'est pas un objet (crée par new) mais est le résultat d'un calcul, et par conséquent n'a pas de référence.
 Pensez-vous qu'il soit possible d'éviter la copie du `Point3D` passé en paramètre ?
+ - Non pour la même raison.
 
 ## E- Bonus
 
