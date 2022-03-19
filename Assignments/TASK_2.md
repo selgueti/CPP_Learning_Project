@@ -7,13 +7,15 @@
 `TowerSimulation::display_help()` est chargé de l'affichage des touches disponibles.
 Dans sa boucle, remplacez `const auto& ks_pair` par un structured binding adapté.
 
+Si vous ne savez plus ce qu'est un structured binding, le [chapitre 6](https://laefy.github.io/CPP_Learning/chapter6/1-searches/) est votre ami (Google aussi d'ailleurs).
+
 ### B - Algorithmes divers
 
 1. `AircraftManager::move()` supprime les avions de la `move_queue` dès qu'ils sont "hors jeux".
 En pratique, il y a des opportunités pour des pièges ici. Pour les éviter, `<algorithm>` met à disposition la fonction `std::remove_if`.
 Remplacez votre boucle avec un appel à `std::remove_if`.
 
-**Attention**: pour cela c'est necessaire que `AircraftManager` stocke les avion dans un `std::vector` ou `std::list` (c'est déjà le cas pour la solution filé).
+**Attention**: pour cela, il est nécessaire que `AircraftManager` stocke les avion dans un `std::vector` ou `std::list`.
 
 2. Pour des raisons de statistiques, on aimerait bien être capable de compter tous les avions de chaque airline.
 A cette fin, rajoutez des callbacks sur les touches `0`..`7` de manière à ce que le nombre d'avions appartenant à `airlines[x]` soit affiché en appuyant sur `x`.
@@ -22,7 +24,7 @@ Rendez-vous compte de quelle classe peut acquérir cet information. Utilisez la 
 ### C - Relooking de Point3D
 
 La classe `Point3D` présente beaucoup d'opportunités d'appliquer des algorithmes.
-Particulairement, des formulations de type `x() = ...; y() = ...; z() = ...;` se remplacent par un seul appel à la bonne fonction de la librairie standard.
+Particulièrement, des formulations de type `x() = ...; y() = ...; z() = ...;` se remplacent par un seul appel à la bonne fonction de la librairie standard.
 Remplacez le tableau `Point3D::values` par un `std::array` et puis,
 remplacez le code des fonctions suivantes en utilisant des fonctions de `<algorithm>` / `<numeric>`:
 
@@ -35,7 +37,7 @@ remplacez le code des fonctions suivantes en utilisant des fonctions de `<algori
 ## Objectif 2 - Rupture de kérosène
 
 Vous allez introduire la gestion de l'essence dans votre simulation.\
-Comme le but de ce TP est de vous apprendre à manipuler les algorithmes de la STL, avant d'écrire une boucle, demandez-vous du coup s'il n'existe pas une fonction d'`<algorithm>` ou de `<numeric>` qui permet de faire la même chose.
+Comme le but de ce TP est de vous apprendre à manipuler les algorithmes de la STL, avant d'écrire une boucle, demandez-vous s'il n'existe pas une fonction d'`<algorithm>` ou de `<numeric>` qui permet de faire la même chose.
 
 La notation tiendra compte de votre utilisation judicieuse de la librairie standard. 
 
@@ -126,7 +128,14 @@ Elle devra appeler la fonction `refill` sur l'avion actuellement au terminal, si
 \- Sinon `next_refill_time` est décrémenté.\
 \- Chaque terminal réapprovisionne son avion s'il doit l'être.
 
-### E - Paramétrage (optionnel)
+### E - Déréservation
+
+Si vous avez suffisamment testé votre programme, vous avez dû vous apercevoir que parfois, certains terminaux arrêtaient d'être réservés et utilisés.\
+En effet, lorsque les avions se crashent alors qu'ils avaient un terminal de réservé, rien n'a été fait pour s'assurer que le terminal allait de nouveau être libre.
+
+Pour garantir cela, vous allez modifier le destructeur de `Aircraft`. Si l'avion a réservé un terminal, assurez-vous que celui-ci est correctement libéré. Pour cela, vous aurez besoin de rajouter une fonction dans la classe `Tower`. Choisissez-lui un nom qui décrit correctement ce qu'elle fait.
+
+### F - Paramétrage (optionnel)
 
 Pour le moment, tous les avions ont la même consommation d'essence (1 unité / trame) et la même taille de réservoir (`3'000`).
 
