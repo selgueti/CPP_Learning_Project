@@ -58,6 +58,8 @@ public:
         speed.cap_length(max_speed());
     }
 
+    Aircraft(Aircraft&&) = default; // constructeur par move
+
     ~Aircraft() { std::cout << "Aircraft : " << flight_number << " : destroyed" << std::endl; }
 
     const std::string& get_flight_num() const { return flight_number; }

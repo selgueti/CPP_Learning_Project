@@ -1,34 +1,20 @@
 #pragma once
 
-#include "GL/displayable.hpp"
 #include "GL/dynamic_object.hpp"
 #include "aircraft.hpp"
+#include "aircraft_manager.hpp"
 
 #include <memory>
-#include <string_view>
 
 class AircraftManager : public GL::DynamicObject
 {
+
 private:
-    std::unordered_map<std::string_view, std::unique_ptr<Aircraft>> aircrafts;
+    std::unordered_map<std::string, std::unique_ptr<Aircraft>> aircrafts;
 
 public:
-    AircraftManager() = default;
+    AircraftManager() { GL::move_queue.insert(this); };
 
-    bool move() override
-    {
-
-        for (auto it = aircrafts.begin(); it != aircrafts.end();)
-        {
-            if ((it->second)->move())
-            {
-                it = aircrafts.erase(it);
-            }
-            else
-            {
-                it++;
-            }
-        }
-        return false;
-    };
+    bool move() override;
+    void add_aircraft(std::unique_ptr<Aircraft> avion); // std::move
 };
