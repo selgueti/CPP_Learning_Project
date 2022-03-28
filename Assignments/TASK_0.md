@@ -86,9 +86,14 @@ Modifiez le programme pour tenir compte de cela.
 inline void init_aircraft_types();
 ```
 
+<<<<<<< HEAD
 2) Identifiez quelle variable contrôle le framerate de la simulation.
  - Le framerate de la simulation est contrôlé par la variable `GL::ticks_per_sec`.
 
+=======
+2) Identifiez quelle variable contrôle le framerate de la simulation.\
+Le framerate correspond au temps de rafraichissement du programme, c'est-à-dire le nombre de fois où les éléments du programme seront mis à jour (ajout de nouvel avion à la simulation, déplacement, etc) en une seconde.\
+>>>>>>> upstream/master
 Ajoutez deux nouveaux inputs au programme permettant d'augmenter ou de diminuer cette valeur.
 ```cpp
 GL::keystrokes.emplace('u', []() { GL::ticks_per_sec += DEFAULT_TPS_INCREMENT;}); 
@@ -105,7 +110,8 @@ Ajoutez une nouvelle fonctionnalité au programme pour mettre le programme en pa
  - Le temps de débarquement des avions est contrôlé par la varriable SERVICE_CYCLES .
 
 4) Lorsqu'un avion a décollé, il réattérit peu de temps après.
-Faites en sorte qu'à la place, il soit retiré du programme.\
+Assurez-vous qu'à la place, il soit supprimé de la `move_queue`.\
+Pour tester, il suffit de dézoomer et de vérifier que les avions suffisament éloignés ne bougent plus.
 Indices :\
 A quel endroit pouvez-vous savoir que l'avion doit être supprimé ?\
  - Dans la fonction `Aircraft::move()`
@@ -121,8 +127,9 @@ Que devez-vous modifier pour transmettre l'information de la première à la sec
 
 5) Lorsqu'un objet de type `Displayable` est créé, il faut ajouter celui-ci manuellement dans la liste des objets à afficher.
 Il faut également penser à le supprimer de cette liste avant de le détruire.
-Faites en sorte que l'ajout et la suppression de `display_queue` soit "automatiquement gérée" lorsqu'un `Displayable` est créé ou détruit.
-Pourquoi n'est-il pas spécialement pertinent d'en faire de même pour `DynamicObject` ?
+Faites en sorte que l'ajout et la suppression de `display_queue` soit "automatiquement gérée" lorsqu'un `Displayable` est créé ou détruit.\
+Essayez maintenant de supprimer complètement l'avion du programme lorsque vous le retirez de la `move_queue`.\
+En dézoomant, vous devriez maintenant constater que les avions disparaissent maintenant de l'écran.
 
 6) La tour de contrôle a besoin de stocker pour tout `Aircraft` le `Terminal` qui lui est actuellement attribué, afin de pouvoir le libérer une fois que l'avion décolle.
 Cette information est actuellement enregistrée dans un `std::vector<std::pair<const Aircraft*, size_t>>` (size_t représentant l'indice du terminal).
@@ -135,10 +142,15 @@ Modifiez le code afin d'utiliser un conteneur STL plus adapté. Normalement, à 
 1) Comment a-t-on fait pour que seule la classe `Tower` puisse réserver un terminal de l'aéroport ?
 Car la fonction `reserve_terminal` de airport est privée et que seule la classe `Tower` en est friendly.
 
+<<<<<<< HEAD
 2) En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une réference ?
  - Car le `Point3D` en question n'est pas un objet (crée par new) mais est le résultat d'un calcul, et par conséquent n'a pas de référence.
 Pensez-vous qu'il soit possible d'éviter la copie du `Point3D` passé en paramètre ?
  - Non pour la même raison.
+=======
+2) En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une réference constante ?
+Pourquoi n'est-il pas possible d'éviter la copie du `Point3D` passé en paramètre ?
+>>>>>>> upstream/master
 
 ## E- Bonus
 
