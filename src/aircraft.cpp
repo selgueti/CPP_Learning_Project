@@ -90,20 +90,23 @@ void Aircraft::add_waypoint(const Waypoint& wp, const bool front)
 
 bool Aircraft::move()
 {
-    if (--fuel == 0)
-    {
-        std::cout << flight_number << " ran out of fuel" << std::endl;
-        return true;
-    }
     if (waypoints.empty())
     {
         if (!first_passage)
         {
+            control.evacuate_aircraft(*this);
             return true;
         }
         waypoints = control.get_instructions(*this);
     }
-
+    if (is_circling())
+    {
+        WaypointQueue new_path = control.reserve_terminal(*this);
+        if (!new_path.empty())
+        {
+            waypoints = std::move(new_path);
+        }
+    }
     if (!is_at_terminal)
     {
         turn_to_waypoint();
@@ -134,6 +137,12 @@ bool Aircraft::move()
         }
         else
         {
+            if (--fuel == 0)
+            {
+                std::cout << flight_number << " ran out of fuel" << std::endl;
+                control.evacuate_aircraft(*this);
+                return true;
+            }
             // if we are in the air, but too slow, then we will sink!
             const float speed_len = speed.length();
             if (speed_len < SPEED_THRESHOLD)
@@ -151,4 +160,15 @@ bool Aircraft::move()
 void Aircraft::display() const
 {
     type.texture.draw(project_2D(pos), { PLANE_TEXTURE_DIM, PLANE_TEXTURE_DIM }, get_speed_octant());
+}
+
+bool Aircraft::has_terminal() const
+{
+
+    return waypoints.back().is_at_terminal();
+}
+
+bool Aircraft::is_circling() const
+{
+    return !first_passage && !waypoints.empty() && !has_terminal();
 }

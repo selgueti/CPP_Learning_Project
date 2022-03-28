@@ -47,4 +47,6 @@ public:
         }
         return false;
     }
+
+    void free_aircraft() { current_aircraft = nullptr; }
 };
