@@ -24,3 +24,15 @@ std::unique_ptr<Aircraft> AircraftFactory::create_random_aircraft(Tower& t)
 
     return create_aircraft(aircraft_types[rand() % 3], t);
 }
+
+void AircraftFactory::print_number_aircraft(int n)
+{
+    assert(n >= 0 && n <= 7);
+    const auto& airline = airlines[n];
+
+    int nb_airlines =
+        std::count_if(name_already_attribued.begin(), name_already_attribued.end(),
+                      [&airline](const std::string& current) { return current.rfind(airline, 0) == 0; });
+
+    std::cout << airline << " : " << nb_airlines << std::endl;
+}

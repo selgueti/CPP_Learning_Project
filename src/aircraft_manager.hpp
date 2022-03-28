@@ -10,7 +10,8 @@ class AircraftManager : public GL::DynamicObject
 {
 
 private:
-    std::unordered_map<std::string, std::unique_ptr<Aircraft>> aircrafts;
+    // std::unordered_map<std::string, std::unique_ptr<Aircraft>> aircrafts;
+    std::vector<std::unique_ptr<Aircraft>> aircrafts;
 
 public:
     AircraftManager() { GL::move_queue.insert(this); };

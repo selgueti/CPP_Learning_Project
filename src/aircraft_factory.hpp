@@ -23,4 +23,5 @@ private:
 public:
     std::unique_ptr<Aircraft> create_aircraft(const AircraftType& type, Tower& t);
     std::unique_ptr<Aircraft> create_random_aircraft(Tower& t); // peut etre non obliger
+    void print_number_aircraft(int n);
 };

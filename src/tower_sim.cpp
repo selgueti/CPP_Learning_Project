@@ -83,6 +83,15 @@ void TowerSimulation::create_keystrokes()
     GL::keystrokes.emplace('u', []() { GL::ticks_per_sec += DEFAULT_TPS_INCREMENT; });
     GL::keystrokes.emplace('d', []() { up_framerate(); });
     GL::keystrokes.emplace(' ', []() { switch_paused(); });
+
+    GL::keystrokes.emplace('0', [this]() { aircraft_factory.print_number_aircraft(0); });
+    GL::keystrokes.emplace('1', [this]() { aircraft_factory.print_number_aircraft(1); });
+    GL::keystrokes.emplace('2', [this]() { aircraft_factory.print_number_aircraft(2); });
+    GL::keystrokes.emplace('3', [this]() { aircraft_factory.print_number_aircraft(3); });
+    GL::keystrokes.emplace('4', [this]() { aircraft_factory.print_number_aircraft(4); });
+    GL::keystrokes.emplace('5', [this]() { aircraft_factory.print_number_aircraft(5); });
+    GL::keystrokes.emplace('6', [this]() { aircraft_factory.print_number_aircraft(6); });
+    GL::keystrokes.emplace('7', [this]() { aircraft_factory.print_number_aircraft(7); });
 }
 
 void TowerSimulation::display_help() const
