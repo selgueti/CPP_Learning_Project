@@ -86,14 +86,9 @@ Modifiez le programme pour tenir compte de cela.
 inline void init_aircraft_types();
 ```
 
-<<<<<<< HEAD
 2) Identifiez quelle variable contrôle le framerate de la simulation.
  - Le framerate de la simulation est contrôlé par la variable `GL::ticks_per_sec`.
 
-=======
-2) Identifiez quelle variable contrôle le framerate de la simulation.\
-Le framerate correspond au temps de rafraichissement du programme, c'est-à-dire le nombre de fois où les éléments du programme seront mis à jour (ajout de nouvel avion à la simulation, déplacement, etc) en une seconde.\
->>>>>>> upstream/master
 Ajoutez deux nouveaux inputs au programme permettant d'augmenter ou de diminuer cette valeur.
 ```cpp
 GL::keystrokes.emplace('u', []() { GL::ticks_per_sec += DEFAULT_TPS_INCREMENT;}); 
@@ -142,15 +137,10 @@ Modifiez le code afin d'utiliser un conteneur STL plus adapté. Normalement, à 
 1) Comment a-t-on fait pour que seule la classe `Tower` puisse réserver un terminal de l'aéroport ?
 Car la fonction `reserve_terminal` de airport est privée et que seule la classe `Tower` en est friendly.
 
-<<<<<<< HEAD
 2) En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une réference ?
  - Car le `Point3D` en question n'est pas un objet (crée par new) mais est le résultat d'un calcul, et par conséquent n'a pas de référence.
 Pensez-vous qu'il soit possible d'éviter la copie du `Point3D` passé en paramètre ?
  - Non pour la même raison.
-=======
-2) En regardant le contenu de la fonction `void Aircraft::turn(Point3D direction)`, pourquoi selon-vous ne sommes-nous pas passer par une réference constante ?
-Pourquoi n'est-il pas possible d'éviter la copie du `Point3D` passé en paramètre ?
->>>>>>> upstream/master
 
 ## E- Bonus
 

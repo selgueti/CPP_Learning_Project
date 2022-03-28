@@ -37,7 +37,6 @@ Il serait donc bon de savoir qui est censé détruire les avions du programme, a
 
 Répondez aux questions suivantes :
 1. Qui est responsable de détruire les avions du programme ? (si vous ne trouvez pas, faites/continuez la question 4 dans TASK_0)
-<<<<<<< HEAD
  - la fonction timer()
 
 2. Quelles autres structures contiennent une référence sur un avion au moment où il doit être détruit ?
@@ -48,10 +47,6 @@ Répondez aux questions suivantes :
 
 4. Pourquoi n'est-il pas très judicieux d'essayer d'appliquer la même chose pour votre `AircraftManager` ?
  - Il n'est pas judicieux d'essayer d'appliquer lâ même chose pour notre `AircraftManager` car celui ci contient un `unique_ptr<Aircraft>`, qui libèrera la ressource au moment du erase.
-=======
-2. Quelles sont les listes qui contiennent une référence sur un avion au moment où il doit être détruit ?
-3. Comment fait-on pour supprimer la référence sur un avion qui va être détruit dans ces deux structures ?
->>>>>>> upstream/master
 
 Pour simplifier le programme, l'`AircraftManager` aura l'ownership des avions, c'est-à-dire que c'est lui qui s'occupera de les faire disparaître du programme, et non plus la fonction `timer`. Il aura également la responsabilité de les faire bouger.
 
