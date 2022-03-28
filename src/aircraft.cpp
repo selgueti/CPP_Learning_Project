@@ -90,6 +90,11 @@ void Aircraft::add_waypoint(const Waypoint& wp, const bool front)
 
 bool Aircraft::move()
 {
+    if (--fuel == 0)
+    {
+        std::cout << flight_number << " ran out of fuel" << std::endl;
+        return true;
+    }
     if (waypoints.empty())
     {
         if (!first_passage)
