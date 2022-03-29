@@ -78,7 +78,7 @@ void Aircraft::operate_landing_gear()
     }
 }
 
-void Aircraft::add_waypoint(const Waypoint& wp, const bool front)
+template <const bool front> void Aircraft::add_waypoint(const Waypoint& wp)
 {
     if (front)
     {
@@ -98,7 +98,10 @@ bool Aircraft::move()
         {
             return true;
         }
-        waypoints = control.get_instructions(*this);
+        for (const auto& wp : control.get_instructions(*this))
+        {
+            add_waypoint<false>(wp);
+        }
     }
     if (is_circling() && waypoints.empty())
     {
