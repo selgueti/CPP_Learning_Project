@@ -3,6 +3,7 @@
 #include "GL/opengl_interface.hpp"
 #include "aircraft_crash.hpp"
 
+#include <assert.h>
 #include <cmath>
 
 void Aircraft::turn_to_waypoint()
@@ -172,6 +173,7 @@ bool Aircraft::is_circling() const
 
 void Aircraft::refill(int& fuel_stock)
 {
+    assert(fuel_stock >= 0);
     int quantity = std::min(fuel_stock, 3000 - fuel);
     fuel += quantity;
     fuel_stock -= quantity;

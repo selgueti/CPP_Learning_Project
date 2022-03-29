@@ -10,7 +10,6 @@ class AircraftManager : public GL::DynamicObject
 {
 
 private:
-    // std::unordered_map<std::string, std::unique_ptr<Aircraft>> aircrafts;
     std::vector<std::unique_ptr<Aircraft>> aircrafts;
     int crashed_aircraft = 0;
 
