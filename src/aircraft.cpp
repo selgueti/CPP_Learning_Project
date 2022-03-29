@@ -94,7 +94,6 @@ bool Aircraft::move()
     {
         if (!first_passage)
         {
-            control.evacuate_aircraft(*this);
             return true;
         }
         waypoints = control.get_instructions(*this);
@@ -140,7 +139,6 @@ bool Aircraft::move()
             if (--fuel == 0)
             {
                 std::cout << flight_number << " ran out of fuel" << std::endl;
-                control.evacuate_aircraft(*this);
                 return true;
             }
             // if we are in the air, but too slow, then we will sink!
@@ -165,7 +163,7 @@ void Aircraft::display() const
 bool Aircraft::has_terminal() const
 {
 
-    return waypoints.back().is_at_terminal();
+    return !waypoints.empty() && waypoints.back().is_at_terminal();
 }
 
 bool Aircraft::is_circling() const

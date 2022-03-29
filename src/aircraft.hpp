@@ -61,7 +61,11 @@ public:
 
     Aircraft(Aircraft&&) = default; // constructeur par move
 
-    ~Aircraft() { std::cout << "Aircraft : " << flight_number << " : destroyed" << std::endl; }
+    ~Aircraft()
+    {
+        std::cout << "Aircraft : " << flight_number << " : destroyed" << std::endl;
+        control.service_completed(*this);
+    }
 
     const std::string& get_flight_num() const { return flight_number; }
     float distance_to(const Point3D& p) const { return pos.distance_to(p); }
@@ -71,6 +75,8 @@ public:
 
     bool has_terminal() const;
     bool is_circling() const;
+
+    int fuel_level() const { return fuel; };
 
     friend class Tower;
 };

@@ -79,7 +79,7 @@ WaypointQueue Tower::reserve_terminal(Aircraft& aircraft)
     return vp.first;
 }
 
-void Tower::evacuate_aircraft(Aircraft& aircraft)
+void Tower::service_completed(Aircraft& aircraft)
 {
     const auto it = reserved_terminals.find(&aircraft);
     if (it != reserved_terminals.end())
