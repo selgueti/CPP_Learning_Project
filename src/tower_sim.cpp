@@ -92,6 +92,9 @@ void TowerSimulation::create_keystrokes()
     GL::keystrokes.emplace('5', [this]() { aircraft_factory.print_number_aircraft(5); });
     GL::keystrokes.emplace('6', [this]() { aircraft_factory.print_number_aircraft(6); });
     GL::keystrokes.emplace('7', [this]() { aircraft_factory.print_number_aircraft(7); });
+    GL::keystrokes.emplace(
+        '8',
+        [this]() { std::cout << "required fuel : " << aircraft_manager.get_required_fuel() << std::endl; });
 }
 
 void TowerSimulation::display_help() const
@@ -109,7 +112,7 @@ void TowerSimulation::display_help() const
 
 void TowerSimulation::init_airport()
 {
-    airport = new Airport { one_lane_airport, Point3D { 0, 0, 0 },
+    airport = new Airport { aircraft_manager, one_lane_airport, Point3D { 0, 0, 0 },
                             new img::Image { one_lane_airport_sprite_path.get_full_path() } };
 
     // GL::display_queue.emplace_back(airport);

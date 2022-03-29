@@ -35,3 +35,16 @@ void AircraftManager::add_aircraft(std::unique_ptr<Aircraft> avion)
 {
     aircrafts.emplace_back(std::move(avion));
 }
+
+int AircraftManager::get_required_fuel() const
+{
+    return std::accumulate(aircrafts.begin(), aircrafts.end(), 0u,
+                           [](unsigned int acc, const std::unique_ptr<Aircraft>& cur)
+                           {
+                               if (cur->has_served() || !cur->is_low_on_fuel())
+                               {
+                                   return acc;
+                               }
+                               return acc + 3000 - cur->fuel_level();
+                           });
+}

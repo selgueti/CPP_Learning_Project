@@ -170,3 +170,12 @@ bool Aircraft::is_circling() const
 {
     return !first_passage && !waypoints.empty() && !has_terminal();
 }
+
+void Aircraft::refill(int& fuel_stock)
+{
+    int quantity = std::min(fuel_stock, 3000 - fuel);
+    fuel += quantity;
+    fuel_stock -= quantity;
+    std::cout << "aircraft receive " << quantity << "L" << std::endl;
+    assert(fuel_stock >= 0);
+}

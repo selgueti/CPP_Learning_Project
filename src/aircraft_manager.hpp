@@ -18,4 +18,6 @@ public:
 
     bool move() override;
     void add_aircraft(std::unique_ptr<Aircraft> avion); // std::move
+
+    int get_required_fuel() const;
 };
