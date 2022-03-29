@@ -98,7 +98,7 @@ bool Aircraft::move()
         }
         waypoints = control.get_instructions(*this);
     }
-    if (is_circling())
+    if (is_circling() && waypoints.empty())
     {
         WaypointQueue new_path = control.reserve_terminal(*this);
         if (!new_path.empty())
