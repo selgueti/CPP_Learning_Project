@@ -12,6 +12,13 @@ bool AircraftManager::move()
     std::sort(aircrafts.begin(), aircrafts.end(),
               [](const std::unique_ptr<Aircraft>& a, const std::unique_ptr<Aircraft>& b)
               {
+                  if (&a == &b)
+                      return false;
+
+                  if (a->has_terminal() && b->has_terminal())
+                  {
+                      return a->fuel_level() < b->fuel_level();
+                  }
                   if (a->has_terminal())
                       return true;
                   if (b->has_terminal())
