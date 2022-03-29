@@ -63,7 +63,7 @@ public:
 
     ~Aircraft()
     {
-        std::cout << "Aircraft : " << flight_number << " : destroyed" << std::endl;
+        // std::cout << "Aircraft : " << flight_number << " : destroyed" << std::endl;
         control.service_completed(*this);
     }
 

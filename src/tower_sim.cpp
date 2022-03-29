@@ -84,6 +84,10 @@ void TowerSimulation::create_keystrokes()
     GL::keystrokes.emplace('d', []() { up_framerate(); });
     GL::keystrokes.emplace(' ', []() { switch_paused(); });
 
+    GL::keystrokes.emplace(
+        'm', [this]()
+        { std::cout << "Aircraft crashed : " << aircraft_manager.get_crashed_aircraft() << std::endl; });
+
     GL::keystrokes.emplace('0', [this]() { aircraft_factory.print_number_aircraft(0); });
     GL::keystrokes.emplace('1', [this]() { aircraft_factory.print_number_aircraft(1); });
     GL::keystrokes.emplace('2', [this]() { aircraft_factory.print_number_aircraft(2); });

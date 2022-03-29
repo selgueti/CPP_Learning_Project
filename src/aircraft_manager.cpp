@@ -1,5 +1,6 @@
 #include "aircraft_manager.hpp"
 
+#include "aircraft_crash.hpp"
 #include "aircraft_factory.hpp"
 
 #include <algorithm>
@@ -25,7 +26,18 @@ bool AircraftManager::move()
               });
 
     auto to_remove = std::remove_if(aircrafts.begin(), aircrafts.end(),
-                                    [](const auto& aircraft) { return aircraft->move(); });
+                                    [this](const auto& aircraft)
+                                    {
+                                        try
+                                        {
+                                            return aircraft->move();
+                                        } catch (const AircraftCrash& crash)
+                                        {
+                                            std::cerr << crash.what() << std::endl;
+                                            crashed_aircraft++;
+                                            return true;
+                                        }
+                                    });
     aircrafts.erase(to_remove, aircrafts.end());
 
     return true;

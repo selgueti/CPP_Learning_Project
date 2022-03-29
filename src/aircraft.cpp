@@ -1,6 +1,7 @@
 #include "aircraft.hpp"
 
 #include "GL/opengl_interface.hpp"
+#include "aircraft_crash.hpp"
 
 #include <cmath>
 
@@ -130,16 +131,14 @@ bool Aircraft::move()
         {
             if (!landing_gear_deployed)
             {
-                using namespace std::string_literals;
-                throw AircraftCrash { flight_number + " crashed into the ground"s };
+                throw AircraftCrash { flight_number, pos, speed, " crashed into the ground" };
             }
         }
         else
         {
             if (--fuel == 0)
             {
-                std::cout << flight_number << " ran out of fuel" << std::endl;
-                return true;
+                throw AircraftCrash { flight_number, pos, speed, "ran out of fuel" };
             }
             // if we are in the air, but too slow, then we will sink!
             const float speed_len = speed.length();
