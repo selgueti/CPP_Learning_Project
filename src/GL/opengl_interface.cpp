@@ -1,5 +1,6 @@
 #include "opengl_interface.hpp"
 
+#include "../aircraft.hpp"
 namespace GL {
 
 void handle_error(const std::string& prefix, const GLenum err)
@@ -73,12 +74,25 @@ void display(void)
 
 void timer(const int step)
 {
-    if(!PAUSED)
+    if (!PAUSED)
     {
-        for (auto& item : move_queue)
+        // for (auto& item : move_queue)
+        // {
+
+        //     std::cout << item->move() << std::endl;
+        // }
+        for (auto it = move_queue.begin(); it != move_queue.end(); it++)
         {
-            
-            std::cout << item->move() << std::endl;
+            (*it)->move();
+            // if ((*it)->move())
+            // {
+            //     delete *it;
+            //     it = move_queue.erase(it);
+            // }
+            // else
+            // {
+            //     it++;
+            // }
         }
     }
     glutPostRedisplay();

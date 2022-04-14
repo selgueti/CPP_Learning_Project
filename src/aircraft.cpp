@@ -1,7 +1,9 @@
 #include "aircraft.hpp"
 
 #include "GL/opengl_interface.hpp"
+#include "aircraft_crash.hpp"
 
+#include <assert.h>
 #include <cmath>
 
 void Aircraft::turn_to_waypoint()
@@ -76,7 +78,7 @@ void Aircraft::operate_landing_gear()
     }
 }
 
-void Aircraft::add_waypoint(const Waypoint& wp, const bool front)
+template <const bool front> void Aircraft::add_waypoint(const Waypoint& wp)
 {
     if (front)
     {
@@ -92,13 +94,23 @@ bool Aircraft::move()
 {
     if (waypoints.empty())
     {
-        if(!first_passage){
-            first_passage = false;
+        if (!first_passage)
+        {
             return true;
         }
-        waypoints = control.get_instructions(*this);
+        for (const auto& wp : control.get_instructions(*this))
+        {
+            add_waypoint<false>(wp);
+        }
     }
-
+    if (is_circling() && waypoints.empty())
+    {
+        WaypointQueue new_path = control.reserve_terminal(*this);
+        if (!new_path.empty())
+        {
+            waypoints = std::move(new_path);
+        }
+    }
     if (!is_at_terminal)
     {
         turn_to_waypoint();
@@ -123,12 +135,15 @@ bool Aircraft::move()
         {
             if (!landing_gear_deployed)
             {
-                using namespace std::string_literals;
-                throw AircraftCrash { flight_number + " crashed into the ground"s };
+                throw AircraftCrash { flight_number, pos, speed, " crashed into the ground" };
             }
         }
         else
         {
+            if (--fuel == 0)
+            {
+                throw AircraftCrash { flight_number, pos, speed, "ran out of fuel" };
+            }
             // if we are in the air, but too slow, then we will sink!
             const float speed_len = speed.length();
             if (speed_len < SPEED_THRESHOLD)
@@ -146,4 +161,25 @@ bool Aircraft::move()
 void Aircraft::display() const
 {
     type.texture.draw(project_2D(pos), { PLANE_TEXTURE_DIM, PLANE_TEXTURE_DIM }, get_speed_octant());
+}
+
+bool Aircraft::has_terminal() const
+{
+
+    return !waypoints.empty() && waypoints.back().is_at_terminal();
+}
+
+bool Aircraft::is_circling() const
+{
+    return !first_passage && !waypoints.empty() && !has_terminal();
+}
+
+void Aircraft::refill(int& fuel_stock)
+{
+    assert(fuel_stock >= 0);
+    int quantity = std::min(fuel_stock, 3000 - fuel);
+    fuel += quantity;
+    fuel_stock -= quantity;
+    std::cout << "aircraft receive " << quantity << "L" << std::endl;
+    assert(fuel_stock >= 0);
 }
