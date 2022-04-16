@@ -177,7 +177,7 @@ bool Aircraft::is_circling() const
 
 void Aircraft::refill(int& fuel_stock)
 {
-    assert(fuel_stock >= 0 && "fuel stock can be < 0");
+    assert(fuel_stock >= 0 && "fuel stock can't be < 0");
     int quantity = std::min(fuel_stock, 3000 - fuel);
     fuel += quantity;
     fuel_stock -= quantity;

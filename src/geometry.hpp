@@ -111,7 +111,7 @@ template <std::size_t size, Arithmetic T> struct Point
 
     double length() const
     {
-        return std::sqrt(std::reduce(values.begin(), values.end(), 0.l,
+        return std::sqrt(std::reduce(values.begin(), values.end(), 0.L,
                                      [](double acc, T cur) { return acc + (cur * cur); }));
     }
 
