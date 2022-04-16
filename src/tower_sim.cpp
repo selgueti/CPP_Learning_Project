@@ -31,14 +31,22 @@ void TowerSimulation::create_random_aircraft()
     aircraft_manager.add_aircraft(aircraft_factory.create_random_aircraft(airport->get_tower()));
 }
 
+static void down_framerate()
+{
+    if (GL::ticks_per_sec <= DEFAULT_TPS_INCREMENT)
+    {
+        return;
+    }
+    GL::ticks_per_sec -= DEFAULT_TPS_INCREMENT;
+}
+
 static void up_framerate()
 {
-    GL::ticks_per_sec -= DEFAULT_TPS_INCREMENT;
-    if (GL::ticks_per_sec == 0)
+    if (GL::ticks_per_sec >= 180)
     {
-        GL::ticks_per_sec = 1;
+        return;
     }
-    // std::cout << GL::ticks_per_sec << std::endl;
+    GL::ticks_per_sec += DEFAULT_TPS_INCREMENT;
 }
 
 static void switch_paused()
@@ -56,8 +64,8 @@ void TowerSimulation::create_keystrokes()
     GL::keystrokes.emplace('-', []() { GL::change_zoom(1.05f); });
     GL::keystrokes.emplace('f', []() { GL::toggle_fullscreen(); });
     // additionnal keystrokes
-    GL::keystrokes.emplace('u', []() { GL::ticks_per_sec += DEFAULT_TPS_INCREMENT; });
-    GL::keystrokes.emplace('d', []() { up_framerate(); });
+    GL::keystrokes.emplace('u', []() { up_framerate(); });
+    GL::keystrokes.emplace('d', []() { down_framerate(); });
     GL::keystrokes.emplace(' ', []() { switch_paused(); });
 
     GL::keystrokes.emplace(

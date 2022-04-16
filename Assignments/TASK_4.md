@@ -22,6 +22,9 @@ for (const auto& wp: control.get_instructions(*this))
 
 2. Modifiez `Aircraft::add_waypoint` afin que l'évaluation du flag ait lieu à la compilation et non à l'exécution.
 Que devez-vous changer dans l'appel de la fonction pour que le programme compile ?
+```
+Il faut que front soit const.
+```
 
 3. **BONUS** En utilisant [GodBolt](https://godbolt.org/), comparez le code-assembleur généré par les fonctions suivantes:
 <table border="0">
@@ -61,9 +64,22 @@ Vérifiez que votre programme compile et fonctionne comme avant.
 
 4. Dans la fonction `test_generic_points`, essayez d'instancier un `Point2D` avec 3 arguments.
 Que se passe-t-il ?
+```
+On essaye d'initialiser un array<2, float> avec 3 éléments (too many initializers for 'std::array<float, 2>')
+```
 Comment pourriez-vous expliquer que cette erreur ne se produise que maintenant ?
+```
+Le compilateur semble avoir réussit à générer le code des classes de template et on a donc les deux constructeurs suivant
+Point<2, float>(float x, float y);
+Point<2, float>(float x, float y, float z);
+
+Le problème ici est que le template genere bien les constructeurs comme attendu, cepandant ceux-ci ne sont pas correct.
+```
 
 5. Que se passe-t-il maintenant si vous essayez d'instancier un `Point3D` avec 2 arguments ?
+```
+Aucun problème ici pour initialiser un array<3, float> avec seulement 2 float dans l'initializer list. En revanche on se retrouve avec un Point3D dont la coordonnée z est initialisé à 0.
+```
 Utilisez un `static_assert` afin de vous assurez que personne ne puisse initialiser un `Point3D` avec seulement deux éléments.
 Faites en de même dans les fonctions `y()` et `z()`, pour vérifier que l'on ne puisse pas les appeler sur des `Point` qui n'ont pas la dimension minimale requise.
 
@@ -71,5 +87,8 @@ Faites en de même dans les fonctions `y()` et `z()`, pour vérifier que l'on ne
 Vous conserverez bien entendu le `static_assert` pour vérifier que le nombre d'arguments passés correspond bien à la dimension du `Point`.\
 En faisant ça, vous aurez peut-être désormais des problèmes avec la copie des `Point`.
 Que pouvez-vous faire pour supprimer l'ambiguité ?
+```
+On peut ajouter le type T en paramètre du constructeur pour changer sa signature.
+```
 
 7. **BONUS** En utilisant SFINAE, faites en sorte que le template `Point` ne puisse être instancié qu'avec des types [arithmétiques](https://en.cppreference.com/w/cpp/types/is_arithmetic).

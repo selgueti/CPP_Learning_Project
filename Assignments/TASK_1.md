@@ -21,13 +21,15 @@ Vous avez 2 choix possibles :
 
 Réfléchissez aux pour et contre de chacune de ces options.
 
-- Créer une nouvelle classe :
-     - Pour   : limite les responsabilités, augmente la lisibilité du code
-     - Contre : ?
-- donner ce rôle à une classe existante.
-     - Pour   : ? 
+```
+Créer une nouvelle classe :
+     - Pour   : clarifie l'ownership, limite les responsabilités, augmente la lisibilité du code, 
+     - Contre : -
+Donner ce rôle à une classe existante :
+     - Pour   : -
      - Contre : violation du single responsability principle
- 
+```
+
 Pour le restant de l'exercice, vous partirez sur le premier choix.
 
 ### B - Déterminer le propriétaire de chaque avion
@@ -37,17 +39,23 @@ Il serait donc bon de savoir qui est censé détruire les avions du programme, a
 
 Répondez aux questions suivantes :
 1. Qui est responsable de détruire les avions du programme ? (si vous ne trouvez pas, faites/continuez la question 4 dans TASK_0)
- - la fonction timer()
-
+```
+La fonction timer().
+```
 2. Quelles autres structures contiennent une référence sur un avion au moment où il doit être détruit ?
- - move_queue et display_queue et tower
-  
+```
+move_queue et display_queue et tower.
+```
+
 3. Comment fait-on pour supprimer la référence sur un avion qui va être détruit dans ces structures ?
- - on fait un erase après avoir delete
+```
+On fait un erase après avoir delete.
+```
 
 4. Pourquoi n'est-il pas très judicieux d'essayer d'appliquer la même chose pour votre `AircraftManager` ?
- - Il n'est pas judicieux d'essayer d'appliquer lâ même chose pour notre `AircraftManager` car celui ci contient un `unique_ptr<Aircraft>`, qui libèrera la ressource au moment du erase.
-
+```
+Il n'est pas judicieux d'essayer d'appliquer lâ même chose pour notre AircraftManager car celui ci contient un unique_ptr<Aircraft>, qui libèrera la ressource au moment du erase.
+```
 Pour simplifier le programme, l'`AircraftManager` aura l'ownership des avions, c'est-à-dire que c'est lui qui s'occupera de les faire disparaître du programme, et non plus la fonction `timer`. Il aura également la responsabilité de les faire bouger.
 
 ### C - C'est parti !
@@ -90,6 +98,9 @@ Vous lui ajouterez un constructeur dont le rôle sera d'appeler les fonctions d'
 
 Vous pouvez maintenant ajoutez un attribut `context_initializer` de type `ContextInitializer` dans la classe `TowerSimulation`.
 A quelle ligne faut-il définir `context_initializer` dans `TowerSimulation` pour s'assurer que le constructeur de `context_initializer` est appelé avant celui de `factory` ?
+```
+Il faut définir context_initializer avant aircraft_factory.
+```
 
 Refactorisez le restant du code pour utiliser votre factory.
 Vous devriez du coup pouvoir supprimer les variables globales `airlines` et `aircraft_types`.

@@ -7,46 +7,45 @@
 #include <iostream>
 #include <numeric>
 #include <utility>
-
-// c++17 SFINAE, Point could be instancied with only arithemtic type
-// template <std::size_t size, typename T, std::enable_if_t<std::is_arithmetic<T>::value, bool> = true>
+// // c++17 SFINAE, Point could be instancied with only arithemtic type
+// template <std::size_t size, typename A, std::enable_if_t<std::is_arithmetic<A>::value, bool> = true>
 // struct Point
 
 // c++20 concept feature for an explicit error msg if type is not arithmetic
 template <typename T>
 concept Arithmetic = std::is_arithmetic_v<T>;
-template <std::size_t size, Arithmetic T> struct Point
+template <std::size_t size, Arithmetic A> struct Point
 {
-    std::array<T, size> values {};
+    std::array<A, size> values {};
 
     Point() = default;
 
     template <typename... Args>
-    Point(T type, Args&&... params) : values { type, static_cast<T>(std::forward<Args>(params))... }
+    Point(A type, Args&&... args) : values { type, static_cast<A>(std::forward<Args>(args))... }
     {
-        static_assert(sizeof...(params) + 1 == size);
+        static_assert(size == sizeof...(args) + 1);
     }
 
-    T& x() { return values[0]; }
-    T x() const { return values[0]; }
+    A& x() { return values[0]; }
+    A x() const { return values[0]; }
 
-    T& y()
-    {
-        static_assert(size >= 2);
-        return values[1];
-    }
-    T y() const
+    A& y()
     {
         static_assert(size >= 2);
         return values[1];
     }
+    A y() const
+    {
+        static_assert(size >= 2);
+        return values[1];
+    }
 
-    T& z()
+    A& z()
     {
         static_assert(size >= 3);
         return values[2];
     }
-    T z() const
+    A z() const
     {
         static_assert(size >= 3);
         return values[2];
@@ -55,20 +54,20 @@ template <std::size_t size, Arithmetic T> struct Point
     Point& operator+=(const Point& other)
     {
 
-        std::transform(values.begin(), values.end(), other.values.begin(), values.begin(), std::plus<T>());
+        std::transform(values.begin(), values.end(), other.values.begin(), values.begin(), std::plus<A>());
 
         return *this;
     }
 
     Point& operator-=(const Point& other)
     {
-        std::transform(values.begin(), values.end(), other.values.begin(), values.begin(), std::minus<T>());
+        std::transform(values.begin(), values.end(), other.values.begin(), values.begin(), std::minus<A>());
         return *this;
     }
 
-    Point& operator*=(const T scalar)
+    Point& operator*=(const A scalar)
     {
-        std::transform(values.begin(), values.end(), values.begin(), [scalar](T v) { return v * scalar; });
+        std::transform(values.begin(), values.end(), values.begin(), [scalar](A v) { return v * scalar; });
         return *this;
     }
 
@@ -86,7 +85,7 @@ template <std::size_t size, Arithmetic T> struct Point
         return result;
     }
 
-    Point operator*(const T scalar) const
+    Point operator*(const A scalar) const
     {
         Point result = *this;
         result *= scalar;
@@ -105,14 +104,14 @@ template <std::size_t size, Arithmetic T> struct Point
     Point& operator*=(const Point& other)
     {
         std::transform(values.begin(), values.end(), other.values.begin(), values.begin(),
-                       [](T v1, T v2) { return v1 * v2; });
+                       [](A acc, A cur) { return acc * cur; });
         return *this;
     }
 
     double length() const
     {
         return std::sqrt(std::reduce(values.begin(), values.end(), 0.L,
-                                     [](double acc, T cur) { return acc + (cur * cur); }));
+                                     [](double acc, A cur) { return acc + (cur * cur); }));
     }
 
     double distance_to(const Point& other) const { return (*this - other).length(); }
