@@ -1,6 +1,8 @@
 #include "opengl_interface.hpp"
 
 #include "../aircraft.hpp"
+
+#include <algorithm>
 namespace GL {
 
 void handle_error(const std::string& prefix, const GLenum err)
@@ -64,10 +66,7 @@ void display(void)
     glOrtho(-zoom, zoom, -zoom, zoom, 0.0f, 1.0f); // left, right, bottom, top, near, far
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_TEXTURE_2D);
-    for (const auto& item : display_queue)
-    {
-        item->display();
-    }
+    std::for_each(display_queue.begin(), display_queue.end(), [](const auto& item) { item->display(); });
     glDisable(GL_TEXTURE_2D);
     glutSwapBuffers();
 }
@@ -76,24 +75,7 @@ void timer(const int step)
 {
     if (!PAUSED)
     {
-        // for (auto& item : move_queue)
-        // {
-
-        //     std::cout << item->move() << std::endl;
-        // }
-        for (auto it = move_queue.begin(); it != move_queue.end(); it++)
-        {
-            (*it)->move();
-            // if ((*it)->move())
-            // {
-            //     delete *it;
-            //     it = move_queue.erase(it);
-            // }
-            // else
-            // {
-            //     it++;
-            // }
-        }
+        std::for_each(move_queue.begin(), move_queue.end(), [](auto movable) { movable->move(); });
     }
     glutPostRedisplay();
     glutTimerFunc(1000u / ticks_per_sec, timer, step + 1);

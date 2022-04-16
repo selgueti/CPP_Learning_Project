@@ -1,5 +1,7 @@
 #include "aircraft_factory.hpp"
 
+#include <cassert>
+
 std::unique_ptr<Aircraft> AircraftFactory::create_aircraft(const AircraftType& type, Tower& t)
 {
     std::string flight_number = airlines[std::rand() % 8] + std::to_string(1000 + (rand() % 9000));
@@ -23,7 +25,7 @@ std::unique_ptr<Aircraft> AircraftFactory::create_random_aircraft(Tower& t)
 
 void AircraftFactory::print_number_aircraft(int n)
 {
-    assert(n >= 0 && n <= 7);
+    assert(n >= 0 && n <= 7 && "n should be in [0, 7]");
     const auto& airline = airlines[n];
     int nb_airlines =
         std::count_if(name_already_attribued.begin(), name_already_attribued.end(),

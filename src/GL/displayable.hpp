@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cassert>
 #include <iostream>
 #include <iterator>
 #include <vector>
@@ -33,6 +34,8 @@ struct disp_z_cmp
 {
     bool operator()(const Displayable* a, const Displayable* b) const
     {
+        assert(a && "a shoudn't be null");
+        assert(b && "b shoudn't be null");
         const auto az = a->get_z();
         const auto bz = b->get_z();
         return (az == bz) ? (a > b) : (az > bz);

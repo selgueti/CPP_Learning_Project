@@ -3,7 +3,8 @@
 #include "GL/opengl_interface.hpp"
 #include "aircraft_crash.hpp"
 
-#include <assert.h>
+#include <algorithm>
+#include <cassert>
 #include <cmath>
 
 void Aircraft::turn_to_waypoint()
@@ -48,6 +49,7 @@ unsigned int Aircraft::get_speed_octant() const
 // when we arrive at a terminal, signal the tower
 void Aircraft::arrive_at_terminal()
 {
+    assert(!is_at_terminal && "aircraft should not have arrived yet");
     // we arrived at a terminal, so start servicing
     control.arrived_at_terminal(*this);
     is_at_terminal = true;
@@ -98,10 +100,9 @@ bool Aircraft::move()
         {
             return true;
         }
-        for (const auto& wp : control.get_instructions(*this))
-        {
-            add_waypoint<false>(wp);
-        }
+        const auto instructions = control.get_instructions(*this);
+        std::for_each(instructions.begin(), instructions.end(),
+                      [this](const auto& wp) { add_waypoint<false>(wp); });
     }
     if (is_circling() && waypoints.empty())
     {
@@ -176,7 +177,7 @@ bool Aircraft::is_circling() const
 
 void Aircraft::refill(int& fuel_stock)
 {
-    assert(fuel_stock >= 0);
+    assert(fuel_stock >= 0 && "fuel stock can be < 0");
     int quantity = std::min(fuel_stock, 3000 - fuel);
     fuel += quantity;
     fuel_stock -= quantity;

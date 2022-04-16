@@ -23,13 +23,12 @@ private:
     ContextInitializer context_initializer;
     bool help        = false;
     Airport* airport = nullptr;
-    AircraftManager aircraft_manager {}; // new
-    AircraftFactory aircraft_factory {}; // new
+    AircraftManager aircraft_manager {};
+    AircraftFactory aircraft_factory {};
 
     TowerSimulation(const TowerSimulation&) = delete;
     TowerSimulation& operator=(const TowerSimulation&) = delete;
 
-    // void create_aircraft(const AircraftType& type) const;
     void create_random_aircraft();
 
     void create_keystrokes();

@@ -4,6 +4,7 @@
 #include "aircraft_factory.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <memory>
 
 bool AircraftManager::move()
@@ -13,7 +14,6 @@ bool AircraftManager::move()
               {
                   if (&a == &b)
                       return false;
-
                   if (a->has_terminal() && b->has_terminal())
                   {
                       return a->fuel_level() < b->fuel_level();
@@ -43,9 +43,10 @@ bool AircraftManager::move()
     return true;
 }
 
-void AircraftManager::add_aircraft(std::unique_ptr<Aircraft> avion)
+void AircraftManager::add_aircraft(std::unique_ptr<Aircraft> aircraft)
 {
-    aircrafts.emplace_back(std::move(avion));
+    assert(aircraft && "aircraft shouldn't be nullptr");
+    aircrafts.emplace_back(std::move(aircraft));
 }
 
 int AircraftManager::get_required_fuel() const

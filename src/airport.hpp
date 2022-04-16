@@ -11,6 +11,7 @@
 #include "terminal.hpp"
 #include "tower.hpp"
 
+#include <algorithm>
 #include <vector>
 
 class Airport : public GL::Displayable, public GL::DynamicObject
@@ -86,11 +87,12 @@ public:
         {
             next_refill_time--;
         }
-        for (auto& t : terminals)
-        {
-            t.refill_aircraft_if_needed(fuel_stock);
-            t.move();
-        }
+        std::for_each(terminals.begin(), terminals.end(),
+                      [this](auto& t)
+                      {
+                          t.refill_aircraft_if_needed(fuel_stock);
+                          t.move();
+                      });
         return false;
     }
 
