@@ -38,12 +38,12 @@ add_executable(tower
 # Compile options #
 ###################
 
-target_compile_features(tower PRIVATE cxx_std_17)
+target_compile_features(tower PRIVATE cxx_std_20)
 
 if(MSVC)
   target_compile_options(tower PRIVATE /W4 /WX)
 else()
-  target_compile_options(tower PRIVATE -Wall -Wextra -Werror -Wshadow -Wno-deprecated)
+  target_compile_options(tower PRIVATE -Wall -Wextra -Werror -Wshadow -Wno-deprecated -fconcepts) #fconcepts feature c++20
 endif()
 
 

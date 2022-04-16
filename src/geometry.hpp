@@ -8,44 +8,45 @@
 #include <numeric>
 #include <utility>
 
-template <std::size_t size, typename Ts, typename Done = std::enable_if<std::is_arithmetic_v<Ts>>>
-struct Point
-// template <std::size_t size, typename Ts> struct Point
+// c++17 SFINAE, Point could be instancied with only arithemtic type
+// template <std::size_t size, typename T, std::enable_if_t<std::is_arithmetic<T>::value, bool> = true>
+// struct Point
+
+// c++20 concept feature for an explicit error msg if type is not arithmetic
+template <typename T>
+concept Arithmetic = std::is_arithmetic_v<T>;
+template <std::size_t size, Arithmetic T> struct Point
 {
-    std::array<Ts, size> values {};
+    std::array<T, size> values {};
 
     Point() = default;
 
     template <typename... Args>
-    Point(Ts type, Args&&... params) : values { type, static_cast<Ts>(std::forward<Args>(params))... }
+    Point(T type, Args&&... params) : values { type, static_cast<T>(std::forward<Args>(params))... }
     {
         static_assert(sizeof...(params) + 1 == size);
-        // std::cout << "sizeof...(params) = " << sizeof...(params) << std::endl;
     }
 
-    // Point(Ts x, Ts y) : values { x, y } { static_assert(size == 2); }
-    // Point(Ts x, Ts y, Ts z) : values { x, y, z } { static_assert(size == 3); }
+    T& x() { return values[0]; }
+    T x() const { return values[0]; }
 
-    Ts& x() { return values[0]; }
-    Ts x() const { return values[0]; }
-
-    Ts& y()
+    T& y()
     {
         static_assert(size >= 2);
         return values[1];
     }
-    Ts y() const
+    T y() const
     {
         static_assert(size >= 2);
         return values[1];
     }
 
-    Ts& z()
+    T& z()
     {
         static_assert(size >= 3);
         return values[2];
     }
-    Ts z() const
+    T z() const
     {
         static_assert(size >= 3);
         return values[2];
@@ -54,20 +55,20 @@ struct Point
     Point& operator+=(const Point& other)
     {
 
-        std::transform(values.begin(), values.end(), other.values.begin(), values.begin(), std::plus<Ts>());
+        std::transform(values.begin(), values.end(), other.values.begin(), values.begin(), std::plus<T>());
 
         return *this;
     }
 
     Point& operator-=(const Point& other)
     {
-        std::transform(values.begin(), values.end(), other.values.begin(), values.begin(), std::minus<Ts>());
+        std::transform(values.begin(), values.end(), other.values.begin(), values.begin(), std::minus<T>());
         return *this;
     }
 
-    Point& operator*=(const Ts scalar)
+    Point& operator*=(const T scalar)
     {
-        std::transform(values.begin(), values.end(), values.begin(), [scalar](Ts v) { return v * scalar; });
+        std::transform(values.begin(), values.end(), values.begin(), [scalar](T v) { return v * scalar; });
         return *this;
     }
 
@@ -85,7 +86,7 @@ struct Point
         return result;
     }
 
-    Point operator*(const Ts scalar) const
+    Point operator*(const T scalar) const
     {
         Point result = *this;
         result *= scalar;
@@ -101,23 +102,24 @@ struct Point
         return result;
     }
 
-    Point<size, Ts>& operator*=(const Point<size, Ts>& other)
+    Point& operator*=(const Point& other)
     {
         std::transform(values.begin(), values.end(), other.values.begin(), values.begin(),
-                       [](Ts v1, Ts v2) { return v1 * v2; });
+                       [](T v1, T v2) { return v1 * v2; });
         return *this;
     }
 
-    Ts length() const
+    double length() const
     {
-        return std::sqrt(
-            std::reduce(values.begin(), values.end(), 0.0, [](Ts acc, Ts cur) { return acc + (cur * cur); }));
+        return std::sqrt(std::reduce(values.begin(), values.end(), 0.l,
+                                     [](double acc, T cur) { return acc + (cur * cur); }));
     }
-    Ts distance_to(const Point& other) const { return (*this - other).length(); }
 
-    Point& normalize(const Ts target_len = 1.0f)
+    double distance_to(const Point& other) const { return (*this - other).length(); }
+
+    Point& normalize(const double target_len = 1.l)
     {
-        const Ts current_len = length();
+        const double current_len = length();
         if (current_len == 0)
         {
             throw std::logic_error("cannot normalize vector of length 0");
@@ -127,11 +129,11 @@ struct Point
         return *this;
     }
 
-    Point& cap_length(const Ts max_len)
+    Point& cap_length(const double max_len)
     {
         assert(max_len > 0);
 
-        const Ts current_len = length();
+        const double current_len = length();
         if (current_len > max_len)
         {
             *this *= (max_len / current_len);

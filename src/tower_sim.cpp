@@ -79,20 +79,6 @@ void TowerSimulation::create_keystrokes()
     GL::keystrokes.emplace('+', []() { GL::change_zoom(0.95f); });
     GL::keystrokes.emplace('-', []() { GL::change_zoom(1.05f); });
     GL::keystrokes.emplace('f', []() { GL::toggle_fullscreen(); });
-<<<<<<< HEAD
-
-    GL::keystrokes.emplace('u', []() { GL::ticks_per_sec += DEFAULT_TPS_INCREMENT;}); 
-    GL::keystrokes.emplace('d', []() {
-        GL::ticks_per_sec -= DEFAULT_TPS_INCREMENT;
-        if(GL::ticks_per_sec == 0){
-            GL::ticks_per_sec = 1;
-        }
-        //std::cout << "GL::ticks_per_sec : " << GL::ticks_per_sec << std::endl;
-        });
-    GL::keystrokes.emplace(' ', []() { GL::PAUSED = !GL::PAUSED;});
-    
-
-=======
     // additionnal keystrokes
     GL::keystrokes.emplace('u', []() { GL::ticks_per_sec += DEFAULT_TPS_INCREMENT; });
     GL::keystrokes.emplace('d', []() { up_framerate(); });
@@ -113,7 +99,6 @@ void TowerSimulation::create_keystrokes()
     GL::keystrokes.emplace(
         '8',
         [this]() { std::cout << "required fuel : " << aircraft_manager.get_required_fuel() << std::endl; });
->>>>>>> a56629a63327f1d4495e47763e38f9ea0e51ecf5
 }
 
 void TowerSimulation::display_help() const
@@ -125,7 +110,6 @@ void TowerSimulation::display_help() const
     {
         std::cout << key << ' ';
     }
-
 }
 
 void TowerSimulation::init_airport()
