@@ -77,7 +77,7 @@ Pour les classes `Tower`, `Aircaft`, `Airport` et `Terminal`, listez leurs fonct
 
 Réalisez ensuite un schéma présentant comment ces différentes classes intéragissent ensemble.
 
-# TODO faire le schema UML
+<img src="CPP_uml.png">
 
 Quelles classes et fonctions sont impliquées dans la génération du chemin d'un avion ?
 ```
